@@ -43,6 +43,7 @@ services:
         condition: service_healthy
     environment:
       - ES_HOST=http://elasticsearch:9200
+      - REPLACE_DOTS_WITH_SPACES=true
     volumes:
       - ./data.trig:/app/data.trig:ro
     restart: on-failure

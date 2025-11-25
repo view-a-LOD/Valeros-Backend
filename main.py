@@ -14,6 +14,8 @@ ES_HOST = os.getenv("ES_HOST", "http://localhost:9200")
 ES_USER = os.getenv("ES_USER")
 ES_PASSWORD = os.getenv("ES_PASSWORD")
 INDEX_NAME = "valeros"
+REPLACE_DOTS_WITH_SPACES = os.getenv(
+    "REPLACE_DOTS_WITH_SPACES", "false").lower() == "true"
 
 
 def load_rdf_graph(file_path: str) -> ConjunctiveGraph:
@@ -26,11 +28,17 @@ def load_rdf_graph(file_path: str) -> ConjunctiveGraph:
 
 def build_documents_from_triples(graph: ConjunctiveGraph) -> Dict[str, Dict[str, Any]]:
     logger.info("Building documents from triples")
+    if REPLACE_DOTS_WITH_SPACES:
+        logger.info("Dot-to-space replacement is ENABLED for all URIs")
     documents = defaultdict(lambda: {"@id": None})
 
     for subject, predicate, obj in graph.triples((None, None, None)):
         subject_uri = str(subject)
         predicate_uri = str(predicate)
+
+        if REPLACE_DOTS_WITH_SPACES:
+            subject_uri = subject_uri.replace(".", " ")
+            predicate_uri = predicate_uri.replace(".", " ")
 
         if documents[subject_uri]["@id"] is None:
             documents[subject_uri]["@id"] = subject_uri
@@ -41,6 +49,9 @@ def build_documents_from_triples(graph: ConjunctiveGraph) -> Dict[str, Dict[str,
             value = str(obj)
         else:
             value = str(obj)
+
+        if REPLACE_DOTS_WITH_SPACES and isinstance(value, str):
+            value = value.replace(".", " ")
 
         if predicate_uri in documents[subject_uri]:
             if not isinstance(documents[subject_uri][predicate_uri], list):
