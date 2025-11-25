@@ -37,7 +37,7 @@ def build_documents_from_triples(graph: ConjunctiveGraph) -> Dict[str, Dict[str,
         predicate_uri = str(predicate)
 
         if REPLACE_DOTS_WITH_SPACES:
-            subject_uri = subject_uri.replace(".", " ")
+            # subject_uri = subject_uri.replace(".", " ")
             predicate_uri = predicate_uri.replace(".", " ")
 
         if documents[subject_uri]["@id"] is None:
@@ -50,8 +50,8 @@ def build_documents_from_triples(graph: ConjunctiveGraph) -> Dict[str, Dict[str,
         else:
             value = str(obj)
 
-        if REPLACE_DOTS_WITH_SPACES and isinstance(value, str):
-            value = value.replace(".", " ")
+        # if REPLACE_DOTS_WITH_SPACES and isinstance(value, str):
+        #     value = value.replace(".", " ")
 
         if predicate_uri in documents[subject_uri]:
             if not isinstance(documents[subject_uri][predicate_uri], list):
