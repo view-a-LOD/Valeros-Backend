@@ -35,6 +35,20 @@ services:
     networks:
       - elastic
 
+  fuseki:
+    image: stain/jena-fuseki
+    container_name: fuseki
+    ports:
+      - "3030:3030"
+    environment:
+      - ADMIN_PASSWORD=${FUSEKI_ADMIN_PASSWORD:-admin}
+      - JVM_ARGS=${FUSEKI_JVM_ARGS:--Xmx2g}
+    volumes:
+      - fuseki_data:/fuseki
+    restart: unless-stopped
+    networks:
+      - elastic
+
   indexer:
     build: .
     container_name: rdf_indexer
@@ -52,6 +66,8 @@ services:
 
 volumes:
   es_data:
+    driver: local
+  fuseki_data:
     driver: local
 
 networks:

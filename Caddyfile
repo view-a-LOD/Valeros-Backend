@@ -13,3 +13,19 @@ hua.linkeddataviewer.nl {
 
     reverse_proxy :9200
 }
+
+hua-sparql.linkeddataviewer.nl {
+    @cors_preflight {
+        method OPTIONS
+    }
+    
+    handle @cors_preflight {
+        header Access-Control-Allow-Origin "*"
+        header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS, HEAD"
+        header Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, X-Auth-Token, Content-Length, Accept"
+        header Access-Control-Max-Age "3600"
+        respond 204
+    }
+
+    reverse_proxy :7878
+}
