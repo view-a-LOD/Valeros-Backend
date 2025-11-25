@@ -40,7 +40,7 @@ services:
     environment:
       - ES_HOST=http://elasticsearch:9200
     volumes:
-      - ./test.trig:/app/test.trig:ro
+      - ./data.trig:/app/data.trig:ro
     restart: on-failure
     networks:
       - elastic
