@@ -27,5 +27,5 @@ hua-sparql.linkeddataviewer.nl {
         respond 204
     }
 
-    reverse_proxy :7878
+    reverse_proxy :3030
 }
