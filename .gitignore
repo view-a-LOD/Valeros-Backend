@@ -1,1 +1,10 @@
-test.trig
+*.trig
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.env
+
+.dockerignore
