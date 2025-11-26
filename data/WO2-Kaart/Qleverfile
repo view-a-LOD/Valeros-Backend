@@ -1,0 +1,24 @@
+
+[data]
+NAME              = WO2-Kaart
+DESCRIPTION       = WO2-Kaart dataset
+TEXT_DESCRIPTION  = All literals, search with FILTER CONTAINS(?var, "...")
+
+[index]
+INPUT_FILES     = WO2-Kaart.nt
+CAT_INPUT_FILES = cat ${INPUT_FILES}
+SETTINGS_JSON   = { "ascii-prefixes-only": false, "num-triples-per-batch": 100000 }
+
+[server]
+PORT               = 7004
+ACCESS_TOKEN       = ${data:NAME}_7643543846_UPxlEyO9Vhqr
+MEMORY_FOR_QUERIES = 5G
+CACHE_MAX_SIZE     = 2G
+TIMEOUT            = 30s
+
+[runtime]
+SYSTEM = docker
+IMAGE  = docker.io/adfreiburg/qlever:latest
+
+[ui]
+UI_CONFIG = WO2-Kaart

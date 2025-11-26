@@ -10,5 +10,7 @@ __pycache__/
 .dockerignore
 
 data/**
+!data/
+!data/*/
 !data/**/Qleverfile
 qlever-ui-db/qleverui.sqlite3
