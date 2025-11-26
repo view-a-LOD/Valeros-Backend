@@ -46,20 +46,6 @@ services:
       - "8176:7000"
     restart: unless-stopped
 
-  fuseki:
-    image: stain/jena-fuseki
-    container_name: fuseki
-    ports:
-      - "3030:3030"
-    environment:
-      - ADMIN_PASSWORD=${FUSEKI_ADMIN_PASSWORD:?FUSEKI_ADMIN_PASSWORD must be set in .env file}
-      - JVM_ARGS=${FUSEKI_JVM_ARGS:--Xmx2g}
-    volumes:
-      - fuseki_data:/fuseki
-    restart: unless-stopped
-    networks:
-      - elastic
-
   indexer:
     build: .
     container_name: rdf_indexer
