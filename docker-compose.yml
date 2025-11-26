@@ -42,6 +42,7 @@ services:
       - ./qlever-ui-db:/app/db
     environment:
       - QLEVERUI_DATABASE_URL=sqlite:////app/db/qleverui.sqlite3
+      - QLEVERUI_CSRF_TRUSTED_ORIGINS=https://hua-query.linkeddataviewer.nl
     ports:
       - "8176:7000"
     restart: unless-stopped
