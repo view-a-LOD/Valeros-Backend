@@ -47,6 +47,22 @@ hua-sparql.linkeddataviewer.nl {
         reverse_proxy :7004
     }
 
+    handle_path /HUA-Dataset/* {
+        reverse_proxy :7005
+    }
+
+    handle_path /Gevangenisregisters/* {
+        reverse_proxy :7006
+    }
+
+    handle_path /Histomap/* {
+        reverse_proxy :7007
+    }
+
+    handle_path /UDS/* {
+        reverse_proxy :7008
+    }
+
     # Fallback
     handle {
         reverse_proxy :7001
