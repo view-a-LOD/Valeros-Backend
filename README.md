@@ -1,4 +1,5 @@
 # Valeros Backend
+
 > [!WARNING]
 > This setup is intended as a work-in-progress **proof of concept / demo**. It is **not** (yet) production ready: for example, Elasticsearch currently runs without authentication.
 
@@ -8,6 +9,51 @@ This project provides a **fully open source** data pipeline for turning RDF data
 - [QLever UI](https://github.com/qlever-dev/qlever-ui) offers a web interface for interactive SPARQL querying.
 - [Caddy](https://github.com/caddyserver/caddy) is used as a reverse proxy for all services and includes automatic HTTPS/SSL via [Let’s Encrypt](https://letsencrypt.org/).
 - [Valeros](https://github.com/view-a-LOD/Valeros/tree/feature/datasets-demo) can be used as a flexible and configurable viewer/search interface for your datasets using these endpoints.
+
+## Architecture
+
+The diagram below gives a high-level overview of how data flows from `.ttl` files to Elasticsearch and QLever SPARQL endpoints, and how these are exposed via Caddy and consumed by QLever UI and Valeros.
+
+Note that, in reality, Valeros also sends its search and SPARQL requests via the Caddy reverse proxy instead of directly to the Elasticsearch and QLever containers. This indirection is left out of the diagram for simplicity.
+
+```mermaid
+flowchart LR
+  %% Data & backend
+  A["TTL files (.ttl) in ./data"] --> B["🐳🐍 Elastic indexer container"]
+  B --> C["🐳 Elasticsearch (:9200)"]
+
+  D["Qleverfile per dataset in ./data"] --> E["🐳 QLever SPARQL endpoints (:7001–:7013, Docker containers)"]
+
+  %% Public domains handled by Caddy
+  subgraph Caddy["Caddy reverse proxy"]
+    CE["elastic.linkeddataviewer.nl"]
+    CQ["query.linkeddataviewer.nl"]
+    CS["sparql.linkeddataviewer.nl"]
+    CV["zoeken.linkeddataviewer.nl"]
+  end
+
+  F["🐳 QLever UI (:8176)"]
+  H["Valeros viewer/search UI (static frontend)"]
+
+  U(("End user / browser"))
+
+  %% Caddy routing (see Caddyfile + Valeros static vhost)
+  CE -->|"reverse_proxy :9200"| C
+  CQ -->|"reverse_proxy :8176"| F
+  CS -->|"/Test-Amerongen/* → :7001, …, /actoren/* → :7013"| E
+  CV -->|"serve static files"| H
+
+  %% Browser → Caddy → apps
+  U -->|"https://elastic.linkeddataviewer.nl"| CE
+  U -->|"https://query.linkeddataviewer.nl"| CQ
+  U -->|"https://sparql.linkeddataviewer.nl/..."| CS
+  U -->|"https://zoeken.linkeddataviewer.nl"| CV
+
+  %% Apps consuming backends
+  F -->|"SPARQL request"| E
+  H -->|"search request"| C
+  H -->|"SPARQL request"| E
+```
 
 If you have any questions or comments about the project, please reach out to mail@simondirks.com.
 
