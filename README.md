@@ -5,6 +5,16 @@
 
 This project provides a **fully open source** data pipeline for turning RDF data in Turtle (`.ttl`) format into searchable Elasticsearch indices and QLever SPARQL endpoints.
 
+If you have any questions or comments about the project, please reach out to mail@simondirks.com.
+
+## Stack
+
+- **Elasticsearch** (single-node, Docker)
+- **QLever** (started via [QLever CLI](https://github.com/ad-freiburg/qlever/) as Docker containers)
+- **QLever UI** (`adfreiburg/qlever-ui` Docker image)
+- **Caddy** (reverse proxy, configured via `Caddyfile`)
+- **Data** in Turtle (`.ttl`) format under `data/`
+
 ## Architecture
 
 The diagram below gives a high-level overview of how data flows from `.ttl` files to Elasticsearch and QLever SPARQL endpoints, and how these are exposed via Caddy and consumed by QLever UI and Valeros.
@@ -55,25 +65,11 @@ flowchart LR
   H -->|"SPARQL request"| E
 ```
 
-If you have any questions or comments about the project, please reach out to mail@simondirks.com.
-
-## Stack
-
-- **Elasticsearch** (single-node, Docker)
-- **QLever** (started via [QLever CLI](https://github.com/ad-freiburg/qlever/) as Docker containers)
-- **QLever UI** (`adfreiburg/qlever-ui` Docker image)
-- **Caddy** (reverse proxy, configured via `Caddyfile`)
-- **Data** in Turtle (`.ttl`) format under `data/`
-
----
-
 ## Prerequisites
 
 - Docker
 - Docker Compose (if not included with Docker)
 - (Optional) Caddy on your server if you are using the provided `Caddyfile`
-
----
 
 ## Configuration
 
@@ -108,8 +104,6 @@ If you have any questions or comments about the project, please reach out to mai
 
    Indexing is **optional**: you can leave `elastic-indexer` disabled or `TTL_FILES` empty and still run QLever/QLever UI to provide SPARQL endpoints for your QLever datasets only.
 
----
-
 ## Running the stack
 
 From the project root:
@@ -135,8 +129,6 @@ Logs (e.g. for the indexer):
 ```bash
 docker compose logs -f elastic-indexer
 ```
-
----
 
 ## Starting QLever SPARQL endpoints
 
