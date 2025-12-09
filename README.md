@@ -2,7 +2,7 @@
 > [!WARNING]
 > This setup is intended as a work-in-progress **proof of concept / demo**. It is **not** (yet) production ready: for example, Elasticsearch currently runs without authentication.
 
-This project provides a **fully open source** data pipeline and backend for turning RDF data in Turtle (`.ttl`) format into searchable Elasticsearch indices and QLever SPARQL endpoints.
+This project provides a **fully open source** data pipeline for turning RDF data in Turtle (`.ttl`) format into searchable Elasticsearch indices and QLever SPARQL endpoints.
 
 - Data is automatically ingested by an indexer container, indexed into [Elasticsearch](https://github.com/elastic/elasticsearch), and exposed as SPARQL endpoints via [QLever](https://github.com/ad-freiburg/qlever/).
 - [QLever UI](https://github.com/qlever-dev/qlever-ui) offers a web interface for interactive SPARQL querying.
