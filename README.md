@@ -24,7 +24,7 @@ The diagram below gives a high-level overview of how data flows from `.ttl` file
 - [Caddy](https://github.com/caddyserver/caddy) is used as a reverse proxy for all services and includes automatic HTTPS/SSL via [Let’s Encrypt](https://letsencrypt.org/).
 - [Valeros](https://github.com/view-a-LOD/Valeros/tree/feature/datasets-demo) can be used as a flexible and configurable viewer/search interface for your datasets using these endpoints.
 
-Note that, in reality, Valeros also sends its search and SPARQL requests via the Caddy reverse proxy instead of directly to the Elasticsearch and QLever containers. This indirection is left out of the diagram for simplicity.
+Note that, in reality, Valeros sends its search and SPARQL requests via the Caddy reverse proxy instead of directly to the Elasticsearch and QLever containers. This indirection is left out of the diagram for simplicity.
 
 ```mermaid
 flowchart LR
