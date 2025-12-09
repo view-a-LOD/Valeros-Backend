@@ -1,4 +1,4 @@
-hua.linkeddataviewer.nl {
+hua-elastic.linkeddataviewer.nl {
     @cors_preflight {
         method OPTIONS
     }
