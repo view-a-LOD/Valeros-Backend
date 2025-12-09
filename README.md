@@ -5,14 +5,14 @@
 
 This project provides a **fully open source** data pipeline for turning RDF data in Turtle (`.ttl`) format into searchable Elasticsearch indices and QLever SPARQL endpoints.
 
+## Architecture
+
+The diagram below gives a high-level overview of how data flows from `.ttl` files to Elasticsearch and QLever SPARQL endpoints, and how these are exposed via Caddy and consumed by QLever UI and Valeros.
+
 - Data is automatically ingested by an indexer container, indexed into [Elasticsearch](https://github.com/elastic/elasticsearch), and exposed as SPARQL endpoints via [QLever](https://github.com/ad-freiburg/qlever/).
 - [QLever UI](https://github.com/qlever-dev/qlever-ui) offers a web interface for interactive SPARQL querying.
 - [Caddy](https://github.com/caddyserver/caddy) is used as a reverse proxy for all services and includes automatic HTTPS/SSL via [Let’s Encrypt](https://letsencrypt.org/).
 - [Valeros](https://github.com/view-a-LOD/Valeros/tree/feature/datasets-demo) can be used as a flexible and configurable viewer/search interface for your datasets using these endpoints.
-
-## Architecture
-
-The diagram below gives a high-level overview of how data flows from `.ttl` files to Elasticsearch and QLever SPARQL endpoints, and how these are exposed via Caddy and consumed by QLever UI and Valeros.
 
 Note that, in reality, Valeros also sends its search and SPARQL requests via the Caddy reverse proxy instead of directly to the Elasticsearch and QLever containers. This indirection is left out of the diagram for simplicity.
 
