@@ -55,13 +55,17 @@ def build_documents_from_triples(graph: Dataset) -> Dict[str, Dict[str, Any]]:
         # if REPLACE_DOTS_WITH_SPACES and isinstance(value, str):
         #     value = value.replace(".", " ")
 
-        if predicate_uri in documents[subject_uri]:
-            if not isinstance(documents[subject_uri][predicate_uri], list):
-                documents[subject_uri][predicate_uri] = [
-                    documents[subject_uri][predicate_uri]]
-            documents[subject_uri][predicate_uri].append(value)
+        # Always store predicate values (except @id) as lists, even for a single value
+        if predicate_uri == "@id":
+            continue
+
+        existing = documents[subject_uri].get(predicate_uri)
+        if existing is None:
+            documents[subject_uri][predicate_uri] = [value]
+        elif isinstance(existing, list):
+            existing.append(value)
         else:
-            documents[subject_uri][predicate_uri] = value
+            documents[subject_uri][predicate_uri] = [existing, value]
 
     logger.info(f"Built {len(documents)} documents")
     return dict(documents)
@@ -71,7 +75,10 @@ def infer_field_type(values: list) -> str:
     if not values:
         return "text"
 
+    # values is a list of sample values; flatten one level if the first element is a list
     sample = values[0] if isinstance(values, list) else values
+    if isinstance(sample, list) and sample:
+        sample = sample[0]
 
     if isinstance(sample, bool):
         return "boolean"
@@ -109,7 +116,12 @@ def create_dynamic_mapping(documents: Dict[str, Dict[str, Any]]) -> Dict[str, An
         sample_values = []
         for doc in documents.values():
             if predicate in doc:
-                sample_values.append(doc[predicate])
+                value = doc[predicate]
+                # Flatten lists so infer_field_type sees the underlying scalar types
+                if isinstance(value, list):
+                    sample_values.extend(value)
+                else:
+                    sample_values.append(value)
                 if len(sample_values) >= 10:
                     break
 
