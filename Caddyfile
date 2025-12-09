@@ -63,6 +63,26 @@ sparql.linkeddataviewer.nl {
         reverse_proxy :7008
     }
 
+    handle_path /object/* {
+        reverse_proxy :7009
+    }
+
+    handle_path /PoC2024/* {
+        reverse_proxy :7010
+    }
+
+    handle_path /PoCAmerongen2024/* {
+        reverse_proxy :7011
+    }
+
+    handle_path /locaties/* {
+        reverse_proxy :7012
+    }
+
+    handle_path /actoren/* {
+        reverse_proxy :7013
+    }
+
     # Fallback
     handle {
         reverse_proxy :7001
